@@ -1,0 +1,61 @@
+{% extends 'ecomerce/base.html' %}
+{% block content %}
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-8 text-2xl text-center">Newest items</h2>
+
+{#        <div class="mb-6 container">#}
+{#            <div class="row">#}
+{#                <div class="col col-lg-2">#}
+{#                    <nav class="navbar navbar-light bg-light">#}
+{#                      <div class="container-fluid">#}
+{#                        <form class="d-flex input-group w-auto" method="get" action="{% url 'item:search-item' %}">#}
+{#                          <input#}
+{#                            class="form-control rounded"#}
+{#                            aria-label="Search"#}
+{#                            aria-describedby="search-addon"#}
+{#                            name="query" type="text" value="{{query}}" placeholder="Find your item"#}
+{#                          />#}
+{#                            <button class="bg-teal-400 text-white rounded-xl ">Search</button>#}
+{#                        </form>#}
+{#                      </div>#}
+{#                    </nav>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="grid grid-cols-3 gap-3">
+                    {% for item in items %}
+                        {% if item.image %}
+                    <div>
+                        <a href="{{ item.get_absolute_url }}">
+                            <div>
+                                <img src="{{ item.image.url }}" class="rounded-t-xl">
+                            </div>
+                                <div class="p-6 bg-white rounded-b-xl">
+                                <h2 class="text-2xl">{{item.name}}</h2>
+                                <p class="text-gray-500">Price: {{item.price}}</p>
+                            </div>
+                        </a>
+                    </div>
+                        {% endif %}
+                    {% endfor %}
+        </div>
+    </div>
+
+  <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">Categories</h2>
+
+        <div class="grid grid-cols-3 gap-3">
+            {% for category in categories %}
+                <div>
+                    <a href="#">
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{ category.name }}</h2>
+                            <p class="text-gray-500">{{ category.items.count }} items</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+  </div>
+{% endblock %}
