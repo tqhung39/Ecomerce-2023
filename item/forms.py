@@ -9,6 +9,7 @@ class AddNewItemForm(forms.ModelForm):
             'description',
             'image',
             'price',
+            'slug',
         )
         widgets = {
             'category': forms.Select(attrs={
@@ -31,6 +32,10 @@ class AddNewItemForm(forms.ModelForm):
                 'placeholder': 'Which category item belongs to',
                 'class': 'w-full py-4 px-6 rounded-xl'
             }),
+            'slug': forms.TextInput(attrs={
+                'placeholder': 'Item Slug',
+                'class': 'w-full py-4 px-6 rounded-xl'
+            })
         }
 
 class updateItemForm(forms.ModelForm):
@@ -41,6 +46,7 @@ class updateItemForm(forms.ModelForm):
             'description',
             'image',
             'price',
+            'slug'
         )
         widgets = {
             'name': forms.TextInput(attrs={
@@ -59,4 +65,8 @@ class updateItemForm(forms.ModelForm):
                 'placeholder': 'Which category item belongs to',
                 'class': 'w-full py-4 px-6 rounded-xl'
             }),
+            'slug': forms.TextInput(attrs={
+                'placeholder': 'Item Slug',
+                'class': 'w-full py-4 px-6 rounded-xl'
+            })
         }

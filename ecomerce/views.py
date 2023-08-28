@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from item.models import Category, Item
+from item.models import Category, Item, Order, OrderItem
 from django.forms import Form
 from ecomerce.forms import SignUpForm, LoginForm
 from django.contrib.auth import logout

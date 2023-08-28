@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Item, Category, OrderItem, Order
 from django.db.models import Q
@@ -40,11 +41,10 @@ def addNewItem(request):
             item = form.save(commit=False)
             item.created_by = request.user # Store user who create item
             item.save() # Create item
-
-            return redirect('item:detail', pk=item.id)
+            return redirect('item:detail', slug=item.slug)
     else:
         form = AddNewItemForm()
-    return render(request, 'item/additem.html', {
+    return render(request, 'item/add-item.html', {
         'form': form,
         'title': 'New Item',
     })
@@ -67,7 +67,7 @@ def updateItem(request, slug):
         form = updateItemForm(instance=item)
     return render(request,'item/updateitem.html', {
         'form': form,
-        'title': 'Update Item Info'
+        'title': 'Update Item Info',
     })
 class CategoryViewSet(viewsets.ModelViewSet):
         queryset = Category.objects.all()
@@ -78,16 +78,22 @@ class ItemViewVset(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
     lookup_field = 'category'
 
-# def OrderSummary(request,slug):
-#     user = User.objects.all()
-#     if user == request.user:
-#         order = Order.objects.get_or_create(user=request.user, ordered=False)
-#         return render(request, 'item/ordersummary.html', context={
-#             'order': order,
-#         })
-#     else:
-#         # messages.warning("You do not have an active order")
-#         return redirect('ecomerce:index')
+
+def Cart_Item_Count(request, user):
+    if user.is_authenticated:
+        order_qs = Order.objects.filter(user=user, ordered=False)
+        if order_qs.exists():
+            return order_qs[0].items.count()
+    return render(request,'ecomerce/base.html',{
+        'order': order_qs,
+    })
+
+
+def OrderSummary(request, slug):
+    order = Order.objects.get(user=request.user)
+    return render(request, 'item/ordersummary.html', {
+        'order': order,
+        })
 
 @login_required()
 def AddToCart(request, slug):
@@ -104,6 +110,7 @@ def AddToCart(request, slug):
             order_item.quantity += 1
             order_item.save()
             messages.info(request, "The item in cart was updated")
+            return redirect('item:order-summary', slug=slug)
         else:
             order.items.add(order_item)
     else:
@@ -116,21 +123,29 @@ def AddToCart(request, slug):
 def RemoveFromCart(request, slug):
     item = get_object_or_404(Item, slug=slug)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
-    if order_qs.exists():
+    if order_qs.exists(): #check if order is exist
         order = order_qs[0]
-        if order.items.filter(item__slug=item.slug).exists():
+        if order.items.filter(item__slug=item.slug).exists(): #check if order item is exist or not
             order_item = OrderItem.objects.filter(
                 item=item,
                 user=request.user,
                 is_ordered=False,
             )[0]
-            order.items.remove(order_item)
-            order_item.delete()
+            if order_item.quantity > 1 :
+                order_item.quantity -= 1
+                order_item.save()
+            else:
+                order.items.remove(order_item)
+                messages.info(request, 'The item in cart was updated')
+                # order_item.delete()
+            return redirect('item:order-summary', slug=slug)
+        else:
+            return redirect("item:detail", slug=slug)
     else:
         return redirect("item:detail", slug=slug)
-    return redirect("item:detail", slug=slug)
 
-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
+
+
 
 
 

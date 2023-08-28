@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load cart_item_count %}
 <head>
     <meta charset="UTF-8">
     <meta name = "viewport" content="width=device-width, initial-scale=1.0">
@@ -8,18 +9,22 @@
     <link rel="stylesheet" href="{% static 'ecomerce/main.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
     <link rel='stylesheet' id='roboto-subset.css-css'  href='https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5' type='text/css' media='all' />
+    <link rel="stylesheet" href="{% static 'main.css' %}">
     <title>Hung's project</title>
 </head>
 <body>
          <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
              <a href="/" class="text-xl font-semibold">Hung</a>
          <div class="space-x-6">
-                <a href="{% url 'item:add-item' %}" class="text-lg font-semibold hover:text-gray-500">New item</a>
-                <a href="{% url 'item:search-item' %}"class="text-lg font-semibold hover:text-gray-500">Browse</a>
+                <a href="{% url 'item:add-item'%}" class="text-lg font-semibold hover:text-gray-500">New item</a>
+                <a href="{% url 'item:search-item' %}"class="text-lg font-semibold hover:text-gray-500">Search</a>
              {% if request.user.is_authenticated %}
-                    <a  class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-                    <a  href="{% url 'dashboard:dashboard' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>
+{#                    <a  class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>#}
+{#                    <a  href="{% url 'dashboard:dashboard' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Dashboard</a>#}
+                 <button><a href="{{ item.get_order_summary_url }}"><i class="fa fa-shopping-cart text-lg"></i></a></button>
+                 <span class='badge badge-warning' id="CartCount" style="margin-left: 1px">{{request.user|cart_item_count}}</span>
                     <a href="{% url 'ecomerce:logout' %}"class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log out</a>
              {% else %}
                     <a href="{% url 'ecomerce:signup' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>

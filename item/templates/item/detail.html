@@ -23,12 +23,12 @@
             </p>
         {% endif %}
     
-        {% if request.user == item.created_by %}
-            <a href="{% url 'item:delete-item' item.slug %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl hover:bg-teal-700">Delete</a>
-            <a href="{% url 'item:update-item' item.slug %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Update Item</a>
+{#        {% if request.user == item.created_by %}#}
             <a href="{{ item.get_add_to_cart_url }}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Add To Cart</a>
-            <a href="{{ item.get_remove_from_cart_url }}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Remove From Cart</a>
-        {% endif %}
+            <a href="{{ item.get_remove_from_cart_url }}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl hover:bg-teal-700">Remove From Cart</a>
+            <a href="{% url 'item:update-item' item.slug %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Update Item</a>
+            <a href="{% url 'item:delete-item' item.slug %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl hover:bg-teal-700">Delete</a>
+{#        {% endif %}#}
     {% endif %}
     </div>
 </div>

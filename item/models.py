@@ -51,6 +51,11 @@ class Item(models.Model):
         return reverse('item:remove-from-cart', kwargs={
             'slug': self.slug,
         })
+
+    def get_order_summary_url(self):
+        return reverse('item:order-summary', kwargs={
+            'slug': self.slug,
+        })
 class OrderItem(models.Model):
     user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
     item = models.ForeignKey(Item, related_name='order_item', on_delete=models.CASCADE)
@@ -68,7 +73,7 @@ class OrderItem(models.Model):
         pass
 
     def get_total_item_price(self):
-        return {self.quantity} * {self.item.price}
+        return self.quantity * self.item.price
 
 class Order(models.Model):
     user = models.ForeignKey(User, related_name='ordered_user', on_delete=models.CASCADE)
@@ -85,4 +90,11 @@ class Order(models.Model):
             total_price += order_item.get_total_item_price()
         return total_price
 
+    # def get_order_summary_url(self):
+    #     return reverse('item:order-summary', kwargs={
+    #         'user': self.user
+    #     })
+
+    # def get_total_item_in_cart(self):
+    #     return self.ordered
 
