@@ -1,1 +1,3 @@
-web: gunicorn core.wsgi -log-file -
+web: gunicorn core.wsgi:application --log-file -
+heroku ps:scale web=1
+python manage.py migrate
