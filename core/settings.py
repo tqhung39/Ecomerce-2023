@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-e$b2mh^+b@)+8iq^c4gsel!9*!f5$ic!!0gdxc*uo&bi_a4p30
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'hung-shop.herokuapp.com', 'www.hungshop.online', 'hungshop.online']
 
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'
